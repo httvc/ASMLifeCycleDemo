@@ -1,0 +1,42 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+
+        java {
+            srcDir "src/main/java"
+        }
+
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation 'com.android.tools.build:gradle:3.4.2'
+   // implementation 'com.android.tools.build:gradle:3.6.1'
+
+    //ASM相关依赖
+    implementation 'org.ow2.asm:asm:7.1'
+    implementation 'org.ow2.asm:asm-commons:7.1'
+}
+
+group='com.httvc.plugin'
+version='1.0.0'
+
+uploadArchives{
+    repositories {
+        mavenDeployer{
+           //本地的Maven地址设置
+            repository(url:uri('../asm_lifecycle_repo'))
+        }
+    }
+}
