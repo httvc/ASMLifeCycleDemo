@@ -8,13 +8,23 @@ import org.gradle.api.Project
 //LifeCyclePlugin的Apply方法会被自动调用
 public class LifeCyclePlugin implements Plugin<Project>{
 
+    /**
+     * 插件引入时要执行的方法
+     * @param project 引入当前插件的Project
+     */
     @Override
     void apply(Project project) {
-        System.out.println("==LifeCyclePlugin gradle plugin==")
+        println "==LifeCyclePlugin gradle plugin=="+project.name
 
         def android=project.extensions.getByType(AppExtension)
         println'------------registering AutoTrackTransform ------------------'
         LifeCycleTransform transform=new LifeCycleTransform()
         android.registerTransform(transform)
+        //创建扩展属性
+        project.extensions.create('httvcReleaseInfo', ReleaseInfoExtersion)
+        //创建Task
+        project.tasks.create('httvcReleaseInfoTask',ReleaseInfoTask)
+        def str="groovy"
+        str.center(8,"a")
     }
 }

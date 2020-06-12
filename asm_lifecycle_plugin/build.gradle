@@ -1,6 +1,5 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
-
 sourceSets {
     main {
         groovy {
@@ -39,4 +38,12 @@ uploadArchives{
             repository(url:uri('../asm_lifecycle_repo'))
         }
     }
+}
+
+tasks.withType(JavaCompile){
+    options.encoding="UTF-8"
+}
+
+tasks.withType(GroovyCompile) {
+    groovyOptions.encoding = "UTF-8"
 }

@@ -2,8 +2,6 @@ package com.httvc.asm;
 
 import org.objectweb.asm.signature.SignatureVisitor;
 
-import sun.reflect.generics.tree.ClassSignature;
-
 /**
  * SignatureVisitor用来访问泛型类型的
  * 类签名 ClassSignature

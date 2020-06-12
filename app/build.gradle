@@ -1,3 +1,6 @@
+import com.android.build.gradle.api.ApplicationVariant
+import com.android.build.gradle.api.BaseVariantOutput
+
 apply plugin: 'com.android.application'
 
 apply plugin: 'com.httvc.lifecycle'//自定义Gradle plugin中properties的文件名
@@ -56,4 +59,64 @@ class LocalPlugin implements Plugin<Project> {
             }
         }
     }
+}
+
+/**
+ * 为自定义插件传递参数
+ */
+httvcReleaseInfo{
+    versionCode=this.android.defaultConfig.versionCode
+    versionName=this.android.defaultConfig.versionName
+    versionInfo="版本号。。。"
+    fileName="releases.xml"
+}
+tasks.withType(JavaCompile){
+    options.encoding="UTF-8"
+}
+
+tasks.withType(GroovyCompile){
+    options.encoding="UTF-8"
+}
+
+//获取变体
+this.afterEvaluate {
+    this.android.applicationVariants.all {
+        ApplicationVariant variant->
+           // def output=variant.outputs.first()
+            def apkName="app-${variant.baseName}"+"-${variant.versionName}.apk"
+           // output.outputFile =new File(output.outputFile.parent,apkName)
+            //高版本
+            variant.outputs.all {BaseVariantOutput output->
+                def outputFile=output.outputFile
+                if (outputFile!=null &&outputFile.name.endsWith('.apk')){
+                    outputFileName=apkName
+                    println outputFileName
+                }
+            }
+
+            println 'variant -------->'+variant.name
+            println 'variant -------->'+variant.baseName
+
+            //获取任意task的变体
+            def task=variant.checkManifest
+            println task.name
+    }
+
+    //删除say_something.jar
+    task clearJar(type: Delete){
+        //删除存在的
+        delete('build/lib/say_something.jar')
+    }
+    //打包任务
+    task makeJar(type:org.gradle.api.tasks.bundling.Jar){
+        baseName 'say_something'
+        //打包class文件位置
+        from('build/intermediates/transforms/LifeCycleTransform/debug/0/com/httvc/asmlifecycledemo/classload')
+        //打包jar包后的目录结构
+        into('com/httvc/asmlifecycledemo/classload/')
+        //去掉不需要打包的目录和文件
+        exclude('SayException.class')//多个以“，”分开写
+    }
+    makeJar.dependsOn(clearJar,build)
+
 }
