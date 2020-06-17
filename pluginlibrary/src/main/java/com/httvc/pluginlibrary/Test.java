@@ -1,10 +1,9 @@
-package com.httvc.plugin;
+package com.httvc.pluginlibrary;
 
 import android.util.Log;
 
 public class Test {
-    public static String print(){
+    public static void print(){
         Log.d("asmlifecyleDemo--plugin","插件");
-        return "插件";
     }
 }

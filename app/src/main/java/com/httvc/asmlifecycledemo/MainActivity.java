@@ -1,6 +1,8 @@
 package com.httvc.asmlifecycledemo;
 
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -63,7 +65,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    Class<?>  clazz = Class.forName("com.httvc.plugin.test");
+              //      ClassLoader pluginClassLoader = new DexClassLoader("/sdcard/plugin-debug.apk",getCacheDir().getAbsolutePath(),null,getClassLoader());
+              //      Class<?> clazz=pluginClassLoader.loadClass("com.httvc.plugin.Test");
+                //    Class<?> clazzz=Class.forName("com.httvc.plugin.MainActivy");
+
+                    Class<?>  clazz = Class.forName("com.httvc.pluginlibrary.Test");
                     Method print=clazz.getMethod("print");
                     print.invoke(null);
                 } catch (ClassNotFoundException e) {
@@ -75,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InvocationTargetException e) {
                     e.printStackTrace();
                 }
+                Intent intent =new Intent();
+                intent.setComponent(new ComponentName("com.httvc.pluginlibrary","com.httvc.pluginlibrary.MainActivity"));
+                startActivity(intent);
             }
         });
 
@@ -92,12 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
         ClassLoader boot_strap = parent.getParent();
         Log.d("MainActivity boot_strap",boot_strap+"");
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static MethodHandles.Lookup lookup(){
-        return MethodHandles.lookup();
     }
 
 }

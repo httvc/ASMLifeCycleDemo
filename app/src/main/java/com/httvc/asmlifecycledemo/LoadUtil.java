@@ -1,7 +1,10 @@
-package com.httvc.asmlifecycledemo.classload;
+package com.httvc.asmlifecycledemo;
 
 import android.content.Context;
+import android.os.Environment;
+import android.util.Log;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
@@ -19,10 +22,12 @@ public class LoadUtil {
             //DexPathList的field对象
             Class<?> classLoaderClass = Class.forName("dalvik.system.BaseDexClassLoader");
             Field pathListField=classLoaderClass.getDeclaredField("pathList");
+            pathListField.setAccessible(true);
 
             //dexElements的field对象
             Class<?> dexPathListClass = Class.forName("dalvik.system.DexPathList");
             Field dexElementsField=dexPathListClass.getDeclaredField("dexElements");
+            dexElementsField.setAccessible(true);
 
             //宿主
             //BaseDexClassLoader
@@ -37,6 +42,8 @@ public class LoadUtil {
             //插件
             //BaseDexClassLoader对象
             //第二个参数8.0及之后可以null，第四个参数7.0之后可以为null
+             File apkFile=new File(Environment.getExternalStorageDirectory().getPath()
+                    +File.separator+"plugin-debug.apk");
             ClassLoader pluginClassLoader = new DexClassLoader(apkPath,context.getCacheDir().getAbsolutePath(),null,pathClassLoader);
 
             //DexPathList类的对象
@@ -49,6 +56,7 @@ public class LoadUtil {
             Object[] newDexElements=(Object[]) Array.newInstance(hostDexElements.getClass().getComponentType(),
                     hostDexElements.length+pluginDexElements.length);
 
+            Log.d("sssssssss","插件已加载");
             //填充数据
             System.arraycopy(hostDexElements,0,newDexElements,0,hostDexElements.length);
             System.arraycopy(pluginDexElements,0,newDexElements,hostDexElements.length,pluginDexElements.length);
@@ -62,7 +70,5 @@ public class LoadUtil {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-
     }
-
 }
