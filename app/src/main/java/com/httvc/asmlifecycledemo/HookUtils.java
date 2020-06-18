@@ -1,5 +1,6 @@
 package com.httvc.asmlifecycledemo;
 
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -17,21 +18,22 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 public class HookUtils {
-    private final static String TARGET_INTENT="target_intent";
-    public static void hookAMS(){
+    private final static String TARGET_INTENT = "target_intent";
+
+    public static void hookAMS() {
         //创建一个代理对象----IActivityManager
         try {
             //IActivityManager的对象--mInstance的Field --》Singleton类的对象
             // -》IActivityManagerSingleton --》ActivityManager的class
 
             Class<?> iActivityManagerClass = Class.forName("android.app.IActivityManager");
-            Field singletonFile=null;
-            if (Build.VERSION.SDK_INT>=26){
+            Field singletonFile = null;
+            if (Build.VERSION.SDK_INT >= 26) {
                 Class<?> activityManagerClass = Class.forName("android.app.ActivityManager");
                 singletonFile = activityManagerClass.getDeclaredField("IActivityManagerSingleton");
-            }else {
+            } else {
                 Class<?> activityManagerNativeClass = Class.forName("android.app.ActivityManagerNative");
-                singletonFile=activityManagerNativeClass.getDeclaredField("gDefault");
+                singletonFile = activityManagerNativeClass.getDeclaredField("gDefault");
             }
             singletonFile.setAccessible(true);
             Object singleton = singletonFile.get(null);
@@ -59,7 +61,7 @@ public class HookUtils {
                         Intent proxyIntent = new Intent();
                         proxyIntent.setClassName("com.httvc.asmlifecycledemo", "com.httvc.asmlifecycledemo.ProxyActivity");
                         proxyIntent.putExtra(TARGET_INTENT, intent);
-                        Log.d("sss","替换成proxy完成");
+                        Log.d("sss", "替换成proxy完成");
                         args[index] = proxyIntent;
 
                     }
@@ -69,8 +71,8 @@ public class HookUtils {
             });
 
             //赋值给系统的IActivityManager对象--覆盖
-            mInstanceField.set(singleton,proxyInstance);
-            Log.d("sss","Hook Finsih");
+            mInstanceField.set(singleton, proxyInstance);
+            Log.d("sss", "Hook Finsih");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
@@ -80,15 +82,15 @@ public class HookUtils {
         }
     }
 
-    public static void hookHandler(){
+    public static void hookHandler(Context context) {
         //mCallback -->Handler对象(mH) -->ActivityThread类的对象-->sCurrentActivityThread对象
         try {
-            Class<?> clazz = Class.forName("android.app.ActivityThread");
-            Field sCurrentActivityThreadField= clazz.getDeclaredField("sCurrentActivityThread");
+            Class<?> activityThreadClass = Class.forName("android.app.ActivityThread");
+            Field sCurrentActivityThreadField = activityThreadClass.getDeclaredField("sCurrentActivityThread");
             sCurrentActivityThreadField.setAccessible(true);
             Object activityThread = sCurrentActivityThreadField.get(null);
 
-            Field mHField= clazz.getDeclaredField("mH");
+            Field mHField = activityThreadClass.getDeclaredField("mH");
             mHField.setAccessible(true);
             Object mH = mHField.get(activityThread);
 
@@ -114,7 +116,7 @@ public class HookUtils {
                                 if (intent != null) {
                                     intentField.set(msg.obj, intent);
                                 }
-                                Log.d("sss","替换成plugin完成");
+                                Log.d("sss", "替换成plugin完成");
                             } catch (NoSuchFieldException e) {
                                 e.printStackTrace();
                             } catch (IllegalAccessException e) {
@@ -125,9 +127,20 @@ public class HookUtils {
                     return false;
                 }
             };
-            Log.d("sss","plugin替换完成");
+            Log.d("sss", "plugin替换完成");
             //替换系统的callback
-            mCallbackField.set(mH,callback);
+            mCallbackField.set(mH, callback);
+
+            //获取mInstrumentation字段
+            Field mInstrumentationField = activityThreadClass.getDeclaredField("mInstrumentation");
+            mInstrumentationField.setAccessible(true);
+            Instrumentation baseInstrumentation = (Instrumentation) mInstrumentationField.get(activityThread);
+
+            //设置我们自己的mInstrumentation
+            Instrumentation proxy= new MyInstrumentation(baseInstrumentation,context);
+            //替换
+            mInstrumentationField.set(activityThread,proxy);
+            Log.e("Main","替换Resource成功");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
@@ -135,32 +148,5 @@ public class HookUtils {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * @param context
-     * @param appPath
-     * @return 得到对应插件的Resources对象
-     */
-    public static Resources getPluginResources(Context context,String appPath){
-        try {
-            AssetManager assetManager = AssetManager.class.newInstance();
-            //反射调用方法addAssetPath(String path)
-            Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
-            //将未安装的apk文件添加进AssetManager中,第二个参数是apk路径
-            addAssetPath.invoke(assetManager,appPath);
-            Resources superRes = context.getResources();
-            Resources mResources = new Resources(assetManager, superRes.getDisplayMetrics(), superRes.getConfiguration());
-            return mResources;
-        } catch (IllegalAccessException e) {
-
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

@@ -1,13 +1,10 @@
 package com.httvc.asmlifecycledemo;
 
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +15,6 @@ import com.httvc.asmlifecycledemo.classload.ISay;
 import com.httvc.asmlifecycledemo.classload.SayException;
 
 import java.io.File;
-import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 

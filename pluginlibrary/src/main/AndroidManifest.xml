@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.httvc.pluginlibrary">
 
-    <application>
-        <activity android:name=".MainActivity"></activity>
+    <application android:theme="@style/AppTheme">
+        <activity android:name=".Main2Activity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
