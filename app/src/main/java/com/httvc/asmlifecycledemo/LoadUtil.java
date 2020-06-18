@@ -44,7 +44,7 @@ public class LoadUtil {
             //第二个参数8.0及之后可以null，第四个参数7.0之后可以为null
              File apkFile=new File(Environment.getExternalStorageDirectory().getPath()
                     +File.separator+"plugin-debug.apk");
-            ClassLoader pluginClassLoader = new DexClassLoader(apkPath,context.getCacheDir().getAbsolutePath(),null,pathClassLoader);
+            ClassLoader pluginClassLoader = new DexClassLoader(apkPath,context.getCacheDir().getAbsolutePath(),context.getCacheDir().getAbsolutePath(),pathClassLoader);
 
             //DexPathList类的对象
             Object pluginPathList = pathListField.get(pluginClassLoader);

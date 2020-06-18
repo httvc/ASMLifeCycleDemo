@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-public class Main2Activity extends Activity {
+public class Main2Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,28 +28,4 @@ public class Main2Activity extends Activity {
         });
 
     }
-
-    /*@Override
-    public Resources getResources() {
-        if (getApplication()!=null && getApplication().getResources()!=null){
-            return getApplication().getResources();
-        }
-        return super.getResources();
-    }
-
-    @Override
-    public AssetManager getAssets() {
-        if (getApplication()!=null && getApplication().getAssets()!=null){
-            return getApplication().getAssets();
-        }
-        return super.getAssets();
-    }
-
-    @Override
-    public Resources.Theme getTheme() {
-        if (getApplication()!=null &&getApplication().getTheme()!=null){
-            return getApplication().getTheme();
-        }
-        return super.getTheme();
-    }*/
 }

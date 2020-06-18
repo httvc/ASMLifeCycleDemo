@@ -23,8 +23,9 @@ public class MyApplication extends Application {
         super.attachBaseContext(base);
 //        MyHookHelper.hookActivityResource(base);
         sContext = base;
+      /*  LoadUtil.loadClass(sContext);
         HookUtils.hookAMS();
-        HookUtils.hookHandler(sContext);
+        HookUtils.hookHandler(sContext);*/
         /*try {
 //            //拿到ContextWrapper类中的字段mBase字段，就是Context
 //            Class<?> aClass = activity.getClass();
@@ -73,7 +74,15 @@ public class MyApplication extends Application {
 
     }
 
-   /* @Override
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        LoadUtil.loadClass(this);
+        HookUtils.hookAMS();
+        HookUtils.hookHandler(getApplicationContext());
+    }
+
+    /* @Override
     public AssetManager getAssets() {
         return assetManager == null ? super.getAssets() : assetManager;
     }

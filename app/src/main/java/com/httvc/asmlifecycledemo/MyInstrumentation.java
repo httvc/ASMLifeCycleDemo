@@ -23,10 +23,6 @@ class MyInstrumentation extends Instrumentation {
 
     @Override
     public void callActivityOnCreate(Activity activity, Bundle icicle) {
-        Log.e("Main","走了我的CallActivityOnCreate");
-        Log.e("Main","activity="+activity);
-        Log.e("Main","Activity class="+activity.getClass());
-        Log.e("Main","activity resouce="+activity.getResources());
 
         try {
             //拿到ContextWrapper类中的字段mBase字段，就是context
@@ -47,19 +43,20 @@ class MyInstrumentation extends Instrumentation {
 
             //创建我们自己的Resource
            // String apkPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/pluginlibrary-debug.aar";
-            String apkPath="/sdcard/plugin-debug.apk";
-            String mPath=mContext.getApplicationContext().getPackageResourcePath();
+           // String apkPath="/sdcard/plugin-debug.apk";
+        //     String apkPath="/sdcard/pluginlibrary-debug.aar";
+        //    String mPath=mContext.getApplicationContext().getPackageResourcePath();
 
             AssetManager assetManager = AssetManager.class.newInstance();
-            Method addAssetPathMethod = assetManager.getClass().getDeclaredMethod("addAssetPath", String.class);
-            addAssetPathMethod.setAccessible(true);
+          //  Method addAssetPathMethod = assetManager.getClass().getDeclaredMethod("addAssetPath", String.class);
+          //  addAssetPathMethod.setAccessible(true);
 
            // addAssetPathMethod.invoke(assetManager,mPath);
-            addAssetPathMethod.invoke(assetManager,apkPath);
+         //   addAssetPathMethod.invoke(assetManager,apkPath);
 
-            Method ensureStringBlocks = AssetManager.class.getDeclaredMethod("ensureStringBlocks");
-            ensureStringBlocks.setAccessible(true);
-            ensureStringBlocks.invoke(assetManager);
+          //  Method ensureStringBlocks = AssetManager.class.getDeclaredMethod("ensureStringBlocks");
+          //  ensureStringBlocks.setAccessible(true);
+          //  ensureStringBlocks.invoke(assetManager);
 
             Resources supResources = mContext.getResources();
             Log.e("main","supResource="+supResources);
@@ -77,10 +74,10 @@ class MyInstrumentation extends Instrumentation {
             e.printStackTrace();
         } catch (InstantiationException e) {
             e.printStackTrace();
-        } catch (NoSuchMethodException e) {
+        /*} catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            e.printStackTrace();*/
         }
         super.callActivityOnCreate(activity, icicle);
     }

@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         world.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
+             /*   try {
               //      ClassLoader pluginClassLoader = new DexClassLoader("/sdcard/plugin-debug.apk",getCacheDir().getAbsolutePath(),null,getClassLoader());
               //      Class<?> clazz=pluginClassLoader.loadClass("com.httvc.plugin.Test");
                 //    Class<?> clazzz=Class.forName("com.httvc.plugin.MainActivy");
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
                     e.printStackTrace();
-                }
+                }*/
                 Intent intent =new Intent();
                 intent.setComponent(new ComponentName("com.httvc.pluginlibrary","com.httvc.pluginlibrary.MainActivity"));
                 startActivity(intent);
