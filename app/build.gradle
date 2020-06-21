@@ -22,7 +22,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.httvc.asmlifecycledemo"
-        minSdkVersion 15
+        minSdkVersion 18
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -47,14 +47,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
 }
 
 class LocalPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project target) {
-        target.task('local'){
+        target.task('local') {
             doLast {
                 println "local load Plugin"
             }
@@ -65,51 +64,51 @@ class LocalPlugin implements Plugin<Project> {
 /**
  * 为自定义插件传递参数
  */
-httvcReleaseInfo{
-    versionCode=this.android.defaultConfig.versionCode
-    versionName=this.android.defaultConfig.versionName
-    versionInfo="版本号。。。"
-    fileName="releases.xml"
+httvcReleaseInfo {
+    versionCode = this.android.defaultConfig.versionCode
+    versionName = this.android.defaultConfig.versionName
+    versionInfo = "版本号。。。"
+    fileName = "releases.xml"
 }
-tasks.withType(JavaCompile){
-    options.encoding="UTF-8"
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
 }
 
-tasks.withType(GroovyCompile){
-    options.encoding="UTF-8"
+tasks.withType(GroovyCompile) {
+    options.encoding = "UTF-8"
 }
 
 //获取变体
 this.afterEvaluate {
     this.android.applicationVariants.all {
-        ApplicationVariant variant->
-           // def output=variant.outputs.first()
-            def apkName="app-${variant.baseName}"+"-${variant.versionName}.apk"
-           // output.outputFile =new File(output.outputFile.parent,apkName)
+        ApplicationVariant variant ->
+            // def output=variant.outputs.first()
+            def apkName = "app-${variant.baseName}" + "-${variant.versionName}.apk"
+            // output.outputFile =new File(output.outputFile.parent,apkName)
             //高版本
-            variant.outputs.all {BaseVariantOutput output->
-                def outputFile=output.outputFile
-                if (outputFile!=null &&outputFile.name.endsWith('.apk')){
-                    outputFileName=apkName
+            variant.outputs.all { BaseVariantOutput output ->
+                def outputFile = output.outputFile
+                if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                    outputFileName = apkName
                     println outputFileName
                 }
             }
 
-            println 'variant -------->'+variant.name
-            println 'variant -------->'+variant.baseName
+            println 'variant -------->' + variant.name
+            println 'variant -------->' + variant.baseName
 
             //获取任意task的变体
-            def task=variant.checkManifest
+            def task = variant.checkManifest
             println task.name
     }
 
     //删除say_something.jar
-    task clearJar(type: Delete){
+    task clearJar(type: Delete) {
         //删除存在的
         delete('build/lib/say_something.jar')
     }
     //打包任务
-    task makeJar(type:org.gradle.api.tasks.bundling.Jar){
+    task makeJar(type: org.gradle.api.tasks.bundling.Jar) {
         baseName 'say_something'
         //打包class文件位置
         from('build/intermediates/transforms/LifeCycleTransform/debug/0/com/httvc/asmlifecycledemo/classload')
@@ -118,6 +117,6 @@ this.afterEvaluate {
         //去掉不需要打包的目录和文件
         exclude('SayException.class')//多个以“，”分开写
     }
-    makeJar.dependsOn(clearJar,build)
+    makeJar.dependsOn(clearJar, build)
 
 }

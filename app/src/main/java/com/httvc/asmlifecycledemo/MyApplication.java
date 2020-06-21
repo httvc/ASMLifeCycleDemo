@@ -77,9 +77,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        LoadUtil.loadClass(this);
+      /*  LoadUtil.loadClass(this);
         HookUtils.hookAMS();
-        HookUtils.hookHandler(getApplicationContext());
+        HookUtils.hookHandler(getApplicationContext());*/
     }
 
     /* @Override
@@ -100,4 +100,8 @@ public class MyApplication extends Application {
     public static Context getContext() {
         return sContext;
     }*/
+
+    public static Context getContext() {
+        return sContext;
+    }
 }

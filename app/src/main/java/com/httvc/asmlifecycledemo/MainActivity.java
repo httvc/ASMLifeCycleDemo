@@ -2,6 +2,7 @@ package com.httvc.asmlifecycledemo;
 
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
         TextView hello=(TextView) findViewById(R.id.hello);
         TextView world=(TextView) findViewById(R.id.world);
         Log.e("TAG","MainActivity------->onCreate()");
@@ -78,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }*/
                 Intent intent =new Intent();
-                intent.setComponent(new ComponentName("com.httvc.pluginlibrary","com.httvc.pluginlibrary.MainActivity"));
+                intent.setComponent(new ComponentName("com.httvc.plugin","com.httvc.plugin.MainActivity"));
                 startActivity(intent);
             }
         });
@@ -97,6 +100,39 @@ public class MainActivity extends AppCompatActivity {
 
         ClassLoader boot_strap = parent.getParent();
         Log.d("MainActivity boot_strap",boot_strap+"");
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
+        try {
+            new Thread(){
+                @Override
+                public void run() {
+                    //创建一个属于我们自己插件的ClassLoader，我们分析过只能使用DexClassLoader
+                    String cachePath = MainActivity.this.getCacheDir().getAbsolutePath();
+                    //String apkPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/chajian_demo.apk";
+                    String apkPath ="/sdcard/plugin-debug.apk";
+                    DexClassLoader mClassLoader = new DexClassLoader(apkPath, cachePath,cachePath, getClassLoader());
+                    MyHookHelper.inject(mClassLoader);
+                    try {
+                        HookUtils.hookAMS();
+                        HookUtils.hookHandler(getApplicationContext());
+                    } catch (Exception e) {
+                        Log.e("Main","加载异常了 = " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this,"加载完成",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
