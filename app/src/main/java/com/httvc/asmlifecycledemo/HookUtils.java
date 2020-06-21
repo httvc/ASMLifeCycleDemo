@@ -59,7 +59,7 @@ public class HookUtils {
 
                         //替换
                         Intent proxyIntent = new Intent();
-                        proxyIntent.setClassName("com.httvc.asmlifecycledemo", "com.httvc.asmlifecycledemo.ProxyActivity");
+                        proxyIntent.setClassName("com.httvc.asmlifecycledemo", "com.httvc.asmlifecycledemo.Proxy2Activity");
                         proxyIntent.putExtra(TARGET_INTENT, intent);
                         Log.d("sss", "替换成proxy完成");
                         args[index] = proxyIntent;

@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }*/
                 Intent intent =new Intent();
-                intent.setComponent(new ComponentName("com.httvc.plugin","com.httvc.plugin.MainActivity"));
+                intent.setComponent(new ComponentName("com.httvc.pluginlibrary","com.httvc.pluginlibrary.MainActivity"));
                 startActivity(intent);
             }
         });
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity boot_strap",boot_strap+"");
     }
 
-    @Override
+   /* @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(newBase);
         try {
@@ -133,6 +133,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 }

@@ -36,7 +36,6 @@ public class BaseActivity extends AppCompatActivity implements InterfaceActivity
 
     @Override
     public void onCreate(Bundle saveInstanceState) {
-        super.onCreate(saveInstanceState);
     }
 
     @Override
@@ -57,31 +56,25 @@ public class BaseActivity extends AppCompatActivity implements InterfaceActivity
 
     @Override
     public void onStart() {
-        super.onStart();
     }
 
     @Override
     public void onResume() {
-        super.onResume();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
     }
 
     @Override
     public void onStop() {
-        super.onStop();
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 }

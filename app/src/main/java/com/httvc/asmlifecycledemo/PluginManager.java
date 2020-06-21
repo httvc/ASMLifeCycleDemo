@@ -44,7 +44,7 @@ public class  PluginManager{
 
     public void loadPath(Context context){
         File fileDir=context.getDir("plugin",Context.MODE_PRIVATE);
-        String name="plugin.apk";
+        String name="plugin-debug.apk";
         String path=new File(fileDir,name).getAbsolutePath();
 
         PackageManager packageManager = context.getPackageManager();

@@ -28,7 +28,7 @@ public class Main2Activity extends AppCompatActivity {
 
     private void loadPlugin() {
         File filesDir = this.getDir("plugin", Context.MODE_PRIVATE);
-        String name="plugin.apk";
+        String name="plugin-debug.apk";
         String filePath=new File(filesDir,name).getAbsolutePath();
         File file=new File(filePath);
         if (file.exists()){
@@ -37,7 +37,9 @@ public class Main2Activity extends AppCompatActivity {
         FileInputStream input=null;//文件输入流(从本地文件读取数据)
         FileOutputStream output=null;//文件输出流(把数据写入本地文件)
         try {
-            input=new FileInputStream(new File(Environment.getExternalStorageDirectory().getAbsolutePath(),name));
+            //new File(Environment.getExternalStorageDirectory().getAbsolutePath(),name)
+            File file1 = new File("/sdcard", name);
+            input=new FileInputStream(file1);
             output=new FileOutputStream(filePath);//文件输出流
             int len=0;
             byte[] buffer=new byte[1024];
