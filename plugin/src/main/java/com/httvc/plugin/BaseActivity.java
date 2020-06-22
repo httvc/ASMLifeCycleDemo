@@ -36,15 +36,14 @@ public class BaseActivity extends AppCompatActivity implements InterfaceActivity
 
     @Override
     public void onCreate(Bundle saveInstanceState) {
+        if (that==null){
+            super.onCreate(saveInstanceState);
+        }
     }
 
     @Override
     public <T extends View> T findViewById(int id) {
-        if (that != null) {
-            return that.findViewById(id);
-        } else {
-            return super.findViewById(id);
-        }
+        return (T) (that==null ?super.findViewById(id):that.findViewById(id));
     }
 
     @Override
@@ -56,25 +55,43 @@ public class BaseActivity extends AppCompatActivity implements InterfaceActivity
 
     @Override
     public void onStart() {
+        if (that==null){
+            super.onStart();
+        }
     }
 
     @Override
     public void onResume() {
+        if (that==null){
+            super.onResume();
+        }
     }
 
     @Override
     public void onPause() {
+        if (that==null){
+            super.onPause();
+        }
     }
 
     @Override
     public void onStop() {
+        if (that==null){
+            super.onStop();
+        }
     }
 
     @Override
     public void onDestroy() {
+        if (that==null){
+            super.onDestroy();
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        if (that==null){
+            super.onSaveInstanceState(outState);
+        }
     }
 }

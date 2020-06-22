@@ -48,6 +48,7 @@ public class  PluginManager{
         String path=new File(fileDir,name).getAbsolutePath();
 
         PackageManager packageManager = context.getPackageManager();
+
         packageArchiveInfo = packageManager.getPackageArchiveInfo(path, PackageManager.GET_ACTIVITIES);
 
         //获取Activity

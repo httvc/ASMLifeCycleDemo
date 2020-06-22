@@ -2,10 +2,9 @@ package com.httvc.asmlifecycledemo;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MotionEvent;
 
 import com.httvc.pluginlibrary.InterfaceActivity;
 
@@ -96,11 +95,6 @@ public class ProxyActivity extends AppCompatActivity {
         interfaceActivity.onDestroy();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        interfaceActivity.onBackPressed();
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -108,9 +102,4 @@ public class ProxyActivity extends AppCompatActivity {
         interfaceActivity.onSaveInstanceState(outState);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
-        return interfaceActivity.onTouchEvent(event);
-    }
 }
