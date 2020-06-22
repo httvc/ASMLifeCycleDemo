@@ -1,7 +1,10 @@
 package com.httvc.plugin;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -51,6 +54,30 @@ public class BaseActivity extends AppCompatActivity implements InterfaceActivity
         Intent m=new Intent();
         m.putExtra("className", intent.getComponent().getClassName());
         that.startActivity(m);
+    }
+
+    @Override
+    public ComponentName startService(Intent intent) {
+        Intent m=new Intent();
+        m.putExtra("serviceName",intent.getComponent().getClassName());
+        return that.startService(m);
+    }
+
+    //重新广播注册
+    @Override
+    public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter) {
+        return that.registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void unregisterReceiver(BroadcastReceiver receiver) {
+        that.unregisterReceiver(receiver);
+    }
+
+    //重写广播发送
+    @Override
+    public void sendBroadcast(Intent intent) {
+        that.sendBroadcast(intent);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.httvc.asmlifecycledemo;
 
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -51,6 +54,23 @@ public class ProxyActivity extends AppCompatActivity {
         Intent intent1=new Intent(this,ProxyActivity.class);
         intent1.putExtra("className",className);
         super.startActivity(intent1);
+    }
+
+    @Override
+    public ComponentName startService(Intent service) {
+        String serviceName = service.getStringExtra("serviceName");
+        Intent intent=new Intent(this,ProxyService.class);
+        intent.putExtra("serviceName",serviceName);
+        return super.startService(intent);
+    }
+
+    @Override
+    public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter) {
+        IntentFilter intentFilter=new IntentFilter();
+        for (int i = 0; i <intentFilter.countActions() ; i++) {
+            intentFilter.addAction(filter.getAction(i));
+        }
+        return super.registerReceiver(new ProxyBroadCast(receiver.getClass().getName(),this), intentFilter);
     }
 
     //重写加载类

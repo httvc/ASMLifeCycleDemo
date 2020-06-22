@@ -20,7 +20,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".BaseActivity" />
-        <activity android:name=".HomeActivitiy"></activity>
+        <activity android:name=".HomeActivitiy" />
+        <service
+            android:name=".OneService"/>
+        <service android:name=".BaseService"/>
     </application>
 
 </manifest>
