@@ -67,7 +67,7 @@ public class ProxyActivity extends AppCompatActivity {
     @Override
     public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter) {
         IntentFilter intentFilter=new IntentFilter();
-        for (int i = 0; i <intentFilter.countActions() ; i++) {
+        for (int i = 0; i <filter.countActions() ; i++) {
             intentFilter.addAction(filter.getAction(i));
         }
         return super.registerReceiver(new ProxyBroadCast(receiver.getClass().getName(),this), intentFilter);
@@ -115,11 +115,9 @@ public class ProxyActivity extends AppCompatActivity {
         interfaceActivity.onDestroy();
     }
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         interfaceActivity.onSaveInstanceState(outState);
     }
-
 }

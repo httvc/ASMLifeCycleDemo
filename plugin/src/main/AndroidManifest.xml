@@ -24,6 +24,11 @@
         <service
             android:name=".OneService"/>
         <service android:name=".BaseService"/>
+         <receiver android:name=".StaticReceiver">
+             <intent-filter>
+                 <action android:name="com.httvc.plugin.StaticReceiver"/>
+             </intent-filter>
+         </receiver>
     </application>
 
 </manifest>

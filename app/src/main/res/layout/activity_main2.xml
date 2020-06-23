@@ -15,6 +15,7 @@
         android:onClick="load"
         app:layout_constraintTop_toTopOf="parent" />
     <Button
+        android:id="@+id/intent"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="跳转"
@@ -23,4 +24,14 @@
         android:onClick="click"
         android:layout_marginTop="40dp"
         app:layout_constraintTop_toBottomOf="@+id/load"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="发送广播"
+        android:textColor="#000000"
+        android:textSize="18dp"
+        android:onClick="sendBroadCas"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/intent"/>
 </android.support.constraint.ConstraintLayout>
